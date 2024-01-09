@@ -45,7 +45,8 @@ class AVLTree{
     //LL회전
     rotateLeft(node){
         let childNode = node.getRightSubTree();
-        node.getRightSubTree(childNode.getLeftSubTree());
+        // node.getRightSubTree(childNode.getLeftSubTree());    : 실수로 get으로 해둬서 오른쪽 서브트리를 지정하는 과정이 사라지게 됨. 그 결과 무한 사이클 발생
+        node.setRightSubTree(childNode.getLeftSubTree());
         childNode.setLeftSubTree(node);
 
         this.updateHeight(node);
@@ -128,8 +129,10 @@ class AVLTree{
         } else if(targetRootNode.getData() == data) {
             return targetRootNode;
         } else if(targetRootNode.getData() > data) {
+            //루트 노드보다 더 작은 값을 넣을려는 경우
             targetRootNode.setLeftSubTree(this.insert(targetRootNode.getLeftSubTree(), data));
         } else {
+            //루트 노드보다 더 큰 값을 넣을려는 경우
             targetRootNode.setRightSubTree(this.insert(targetRootNode.getRightSubTree(), data));
         }
 
@@ -145,9 +148,9 @@ class AVLTree{
             targetRootNode.setLeftSubTree(this.remove(targetRootNode.getLeftSubTree(), data, targetRootNode));
         } else if(targetRootNode.getData() < data && targetRootNode.getRightSubTree() != null) {
             //삭제할 노드가 오른쪽 자식노드에 있는 경우
-            targetRootNode.setRightSubTree(this.remove(targetRootNode.setRightSubTree(), data, targetRootNode));
+            targetRootNode.setRightSubTree(this.remove(targetRootNode.getRightSubTree(), data, targetRootNode));
         } else if(targetRootNode.getData() == data) {
-            targetRootNode = this.removeHelper(targetRootNode, data, parentNode);
+            targetRootNode = this.removeHelper(targetRootNode, parentNode);
             
             if(parentNode == null && targetRootNode != null) {
                 this.updateHeight(targetRootNode);
@@ -180,7 +183,6 @@ class AVLTree{
                 parentNode.removeRightSubTree();
             }
         } else if(deletingNode.getLeftSubTree() == null || deletingNode.getRightSubTree() == null) {
-
             if(deletingNode.getLeftSubTree() != null){
                 deletingNodeChild = deletingNode.getLeftSubTree();
             } else {
@@ -230,13 +232,34 @@ avlTree.insert(avlTree.root, 5);
 avlTree.insert(avlTree.root, 6);
 avlTree.insert(avlTree.root, 7);
 console.log(avlTree.root);
+
+let rtNode = avlTree.root;
+let rt = avlTree.root?.getData();
+let L1 = avlTree.root?.getLeftSubTree()?.getData();
+let L1L2 = avlTree.root?.getLeftSubTree()?.getLeftSubTree()?.getData();
+let L1R2 = avlTree.root?.getLeftSubTree()?.getRightSubTree()?.getData();
+let R1 = avlTree.root?.getRightSubTree()?.getData();
+let R1L2 = avlTree.root?.getRightSubTree()?.getLeftSubTree()?.getData();
+let R1R2 = avlTree.root?.getRightSubTree()?.getRightSubTree()?.getData();
+// 서브트리 전수조사해본뒤 어느 과정에서 오류나는지 찾는 용도로 씀.
+
+// console.log(`Root : ${rt}`);
+// console.log(`L1 : ${L1}`);
+// console.log(`L1L1 : ${L1L2}`);
+// console.log(`L1R2 : ${L1R2}`);
+// console.log(`R1 : ${R1}`);
+// console.log(`R1L2 : ${R1L2}`);
+// console.log(`R1R2 : ${R1R2}`);
+
+
 avlTree.root.inOrderTraveral(avlTree.root);
 
-// console.log("====== remove ======");
-// avlTree.remove(avlTree.root, 2);
-// avlTree.remove(avlTree.root, 3);
-// avlTree.remove(avlTree.root, 1);
+console.log("====== remove ======");
+avlTree.remove(avlTree.root, 2);
+avlTree.remove(avlTree.root, 3);
+avlTree.remove(avlTree.root, 1);
+avlTree.root.inOrderTraveral(avlTree.root);
 // console.log(avlTree.root);
 
-// console.log("====== search ======");
-// console.log(avlTree.search(7));
+console.log("====== search ======");
+console.log(avlTree.search(6));

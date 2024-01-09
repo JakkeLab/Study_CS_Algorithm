@@ -40,7 +40,7 @@ class BinaryTree {
         if(tree == null) return;
         this.inOrderTraveral(tree.getLeftSubTree());
         console.log(tree.data);
-        this.preOrderTraveral(tree.getRightSubTree());
+        this.inOrderTraveral(tree.getRightSubTree());
     }
 
     postOrderTraveral(tree) {

@@ -41,7 +41,7 @@ class BinaryTree {
         if(tree == null) return;
         this.inOrderTraveral(tree.getLeftSubTree());
         console.log(tree.data);
-        this.preOrderTraveral(tree.getRightSubTree());
+        this.inOrderTraveral(tree.getRightSubTree());
     }
 
     postOrderTraveral(tree) {
@@ -49,6 +49,19 @@ class BinaryTree {
         this.postOrderTraveral(tree.getLeftSubTree());
         this.postOrderTraveral(tree.getRightSubTree());
         console.log(tree.data);
+    }
+
+    //오류 원인 : AVLTree에 쓴 이진트리에 서브트리를 삭제하는 함수를 빼먹었음.
+    removeLeftSubTree(){
+        let deletingNode = this.getLeftSubTree();
+        this.setLeftSubTree(null);
+        return deletingNode;
+    }
+
+    removeRightSubTree(){
+        let deletingNode = this.getRightSubTree();
+        this.setRightSubTree(null);
+        return deletingNode;
     }
 }
 
